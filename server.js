@@ -26,3 +26,5 @@ app.use('/',routes);
 app.listen(process.env.PORT, function () { 
     console.log('app running on port ',process.env.PORT);
 });
+
+module.exports = app;
