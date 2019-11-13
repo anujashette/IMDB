@@ -75,6 +75,7 @@ ProducerService.prototype.updateProducer = async (producerParam, callback) => {
         }
     } catch (error) {
         log.logger.error(error);
+        return callback('Producer already exist');
     }
 };
 

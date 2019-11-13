@@ -102,7 +102,7 @@ ActorController.prototype.updateActor = (req, res) => {
         const error = req.validationErrors();
 
         if (error) {
-            res.status(400).send('Error: ', error);
+            res.status(400).send({'Error: ':error});
         }
         else {
             const actorParam = {
@@ -123,7 +123,7 @@ ActorController.prototype.updateActor = (req, res) => {
                 else {
                     return res.status(200).send({
                         status: '200',
-                        message: 'Actors updated successfully',
+                        message: 'Actor updated successfully',
                         data: response
                     });
                 }
@@ -156,7 +156,7 @@ ActorController.prototype.deleteActor = (req, res) => {
             else {
                 return res.status(200).send({
                     status: '200',
-                    message: 'Actors deleted successfully',
+                    message: 'Actor deleted successfully',
                     data: response
                 });
             }

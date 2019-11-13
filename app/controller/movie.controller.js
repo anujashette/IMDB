@@ -37,14 +37,12 @@ MovieController.prototype.createMovie = (req, res) => {
             res.status(400).send({'Error: ': error});
         }
         else {
-            console.log(req.file.path);
-
             const movieParam = {
                 name: req.body.name,
                 yearOfRelease: req.body.yearOfRelease,
                 plot: req.body.plot,
                 poster: req.file.path,
-                actor:req.body.actor,
+                actors:req.body.actor,
                 producer:req.body.producer
             };
             movieService.createMovie(movieParam, (error, response) => {                
@@ -112,14 +110,13 @@ MovieController.prototype.updateMovie = (req, res) => {
             return res.status(400).send({'Error: ': error});
         }
         else {
-            console.log(req.file.path);
             
             const movieParam = {
                 name: req.body.name,
                 yearOfRelease: req.body.yearOfRelease,
                 plot: req.body.plot,
                 poster: req.file.path,
-                actor:req.body.actor,
+                actors:req.body.actor,
                 producer:req.body.producer
             };
             const id = { _id : req.body.id};
@@ -127,8 +124,8 @@ MovieController.prototype.updateMovie = (req, res) => {
             movieService.updateMovie(id,movieParam, (error, response) => { 
                
                 if (error) {
-                    return res.status(409).send({
-                        status: '409',
+                    return res.status(403).send({
+                        status: '403',
                         message: error,
                         data: ''
                     });
@@ -159,7 +156,7 @@ MovieController.prototype.deleteMovie = (req, res) => {
             id: req.body.id,
         };
         movieService.deleteMovie(movieParam,(error, response) => {
-            if (error) {
+            if (error) {                
                 return res.status(403).send({
                     status: '403',
                     message: error,
@@ -169,7 +166,7 @@ MovieController.prototype.deleteMovie = (req, res) => {
             else {
                 return res.status(200).send({
                     status: '200',
-                    message: 'Movies deleted successfully',
+                    message: 'Movie deleted successfully',
                     data: response
                 });
             }

@@ -34,7 +34,7 @@ const movie = new mongoose.Schema({
         type: String,
         required: true
     },
-    actor: [{
+    actors: [{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'actor',
@@ -75,7 +75,7 @@ MovieModel.prototype.create = async (movieParam) => {
  ****************************************************************************************************
  */
 MovieModel.prototype.read = async () =>{
-    let getMovies = await Movie.find({}).populate('actor producer');
+    let getMovies = await Movie.find({}).populate('actors producer');
     return getMovies;
 };
 
@@ -108,7 +108,7 @@ MovieModel.prototype.delete = async(id) => {
     
     const deletedMovie =await Movie.findByIdAndRemove(id);
     if(deletedMovie === null){
-        return 'Actor not found to delete';
+        return 'Movie not found to delete';
     }
     else{
         return deletedMovie;

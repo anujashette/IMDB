@@ -66,8 +66,9 @@ MovieService.prototype.updateMovie = async (id,movieParam, callback) => {
         else {
             return callback(null, updateResponse);
         }
-    } catch (error) {
+    } catch (error) {        
         log.logger.error(error);
+        return callback('Movie already exist');
     }
 };
 

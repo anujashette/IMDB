@@ -126,7 +126,7 @@ ProducerController.prototype.updateProducer = (req, res) => {
                 else {
                     return res.status(200).send({
                         status: '200',
-                        message: 'Producers updated successfully',
+                        message: 'Producer updated successfully',
                         data: response
                     });
                 }
@@ -159,7 +159,7 @@ ProducerController.prototype.deleteProducer = (req, res) => {
             else {
                 return res.status(200).send({
                     status: '200',
-                    message: 'Producers deleted successfully',
+                    message: 'Producer deleted successfully',
                     data: response
                 });
             }

@@ -74,6 +74,7 @@ ActorService.prototype.updateActor = async (actorParam, callback) => {
         }
     } catch (error) {
         log.logger.error(error);
+        return callback('Actor already exist');
     }
 };
 
