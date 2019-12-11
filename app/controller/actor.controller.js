@@ -33,6 +33,7 @@ ActorController.prototype.createActor = (req, res) => {
         }
         else {
             const actorParam = {
+                // _id:req.body.id,
                 name: req.body.name,
                 gender: req.body.gender,
                 DOB: req.body.DOB,
@@ -166,4 +167,38 @@ ActorController.prototype.deleteActor = (req, res) => {
     }
 };
 
+ActorController.prototype.actorVersioning = (req, res) => {
+    try {        
+        req.check('_id').not().isEmpty().withMessage('Actor id is required for versioning');
+        const error = req.validationErrors();
+
+        if (error) {
+            res.status(400).send('Error: ', error);
+        }
+        else {
+            const actorParam = {
+                _id:req.body._id
+            };
+
+            actorService.actorVersioning(actorParam, (error, response) => {                
+                if (error) {
+                    return res.status(409).send({
+                        status: '409',
+                        message: error,
+                        data: ''
+                    });
+                }
+                else {
+                    return res.status(200).send({
+                        status: '200',
+                        message: 'Actor version updated successfully',
+                        data: response
+                    });
+                }
+            });
+        }
+    } catch (error) {
+        log.logger.error(error);
+    }
+};
 module.exports = new ActorController();

@@ -16,13 +16,18 @@ const routes = require('./app/router/routes');
 var expressValidator = require('express-validator');
 var app = express();
 require('./app/mongoose/db.connection');
+const cors = require('cors');
 require('dotenv').config();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 app.use(expressValidator());
 app.use('/',routes);
 
+app.get('/',function(req,res){
+    res.send('IMDB API running...');
+});
 app.listen(process.env.PORT, function () { 
     console.log('app running on port ',process.env.PORT);
 });

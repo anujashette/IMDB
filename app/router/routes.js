@@ -16,10 +16,12 @@ const actorObj = require('../controller/actor.controller');
 const producerObj = require('../controller/producer.controller');
 const movieObj = require('../controller/movie.controller');
 const upload = require('../middleware/multer');
+const actorVersionObj = require('../controller/actor.version.controller');
 
-app.get('/',function(req,res){
-    res.send('IMDB API running...');
-});
+
+// app.get('/',function(req,res){
+//     res.send('IMDB API running...');
+// });
 
 /*****************************************************************************************************
  * @param /actor Route path.
@@ -54,5 +56,15 @@ app.post('/movie',upload,movieObj.createMovie);
 app.get('/movie',movieObj.readMovie);
 app.put('/movie',upload,movieObj.updateMovie);
 app.patch('/movie',movieObj.deleteMovie);
+
+/*****************************************************************************************************
+ * @param /actor versioning Route path.
+ * @param movieObj Controller function object.
+ * @upload Calling to upload function.
+ * @description CRUD router of movie.
+ *****************************************************************************************************
+ */
+app.post('/actor/older/versions',actorVersionObj.addActorsVersion);
+app.post('/actor/approved',actorObj.actorVersioning);
 
 module.exports = app;

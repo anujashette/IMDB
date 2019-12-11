@@ -1,30 +1,14 @@
-/******************************************************************************
- *  Compilation:  nodemon server.js
- *  Execution:    nodemon server.js
- *  
- *  Purpose:  Actor model interact with database.
- *
- *  @author  Anuja Shette
- *  @version 1.0
- *  @since   08-10-2019
- *
- ******************************************************************************/
-
 const mongoose = require('mongoose');
 
-/****************************************************************************************************
- * @description Actor schema.
- ****************************************************************************************************
- */
 const actor = new mongoose.Schema({
-    // _id:{
-    //     type: Number,
-    //     // unique:true
-    // },
+    actorID: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true,
-        unique: true
+        // unique: true
     },
     gender: {
         type: String,
@@ -37,31 +21,47 @@ const actor = new mongoose.Schema({
     bio: {
         type: String,
         required: true
+    },
+    createdAt: {
+        type: Date
+    },
+    updatedAt: {
+        type: Date
+    },
+    __v: {
+        type: String,
+        required: true
     }
 },
 {
-    // _id:false,
-    timestamps:true
+    versionKey: false,
+    timestamps: false
 });
 
-const Actor = new mongoose.model('actor', actor);
+const ActorPrivous = new mongoose.model('actorPrevious', actor);
 
-function ActorModel() { }
+function ActorPrevModel() { }
 
 /****************************************************************************************************
  * @param actorParam 
  * @description Add new actor in database.
  ****************************************************************************************************
  */
-ActorModel.prototype.create = async (actorParam) => {
+ActorPrevModel.prototype.add = async (actorParam) => {
 
-    let savedActor = await Actor.findOne({ 'name': actorParam.name });
+    let savedActor = await ActorPrivous.findOne({
+        $and: [
+            { 'actorID': actorParam.actorID },
+            { '__v': actorParam.__v }
+        ]
+    });
+    console.log('actor and version=======>', savedActor);
 
     if (savedActor !== null) {
         savedActor = 'Actor already exist';
     }
     else {
-        const newActor = new Actor(actorParam);
+        const newActor = new ActorPrivous(actorParam);
         savedActor = newActor.save();
     }
     return savedActor;
@@ -70,9 +70,9 @@ ActorModel.prototype.create = async (actorParam) => {
  * @description Get all actors from database.
  ****************************************************************************************************
  */
-ActorModel.prototype.read = async () => {
+ActorPrevModel.prototype.read = async () => {
 
-    let getActor = await Actor.find({});
+    let getActor = await ActorPrivous.find({});
     return getActor;
 };
 
@@ -81,13 +81,13 @@ ActorModel.prototype.read = async () => {
  * @description Edit actor details and update in database.
  ****************************************************************************************************
  */
-ActorModel.prototype.update = async(id,actorParam) => {
+ActorPrevModel.prototype.update = async (id, actorParam) => {
 
-    const updatedActor =await Actor.findByIdAndUpdate(id,actorParam);
-    if(updatedActor === null){
+    const updatedActor = await ActorPrivous.findByIdAndUpdate(id, actorParam);
+    if (updatedActor === null) {
         return 'Actor not found to update';
     }
-    else{
+    else {
         return updatedActor;
     }
 };
@@ -97,15 +97,15 @@ ActorModel.prototype.update = async(id,actorParam) => {
  * @description Delete actor from database.
  ****************************************************************************************************
  */
-ActorModel.prototype.delete = async(id) => {
-    
-    const deletedActor =await Actor.findByIdAndRemove(id);
-    if(deletedActor === null){
+ActorPrevModel.prototype.delete = async (id) => {
+
+    const deletedActor = await ActorPrivous.findByIdAndRemove(id);
+    if (deletedActor === null) {
         return 'Actor not found to delete';
     }
-    else{
+    else {
         return deletedActor;
     }
 };
 
-module.exports = new ActorModel();
+module.exports = new ActorPrevModel();
